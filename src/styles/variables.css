@@ -1,0 +1,10 @@
+:root {
+   /* header colors */
+  --color-header-bg: #6e6e6e;
+
+  /* text colors */
+  --color-text-primary: #24292e;
+
+  /* element colors */
+  --color-surface:#e0e0e0;
+}
