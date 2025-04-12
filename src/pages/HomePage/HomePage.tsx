@@ -1,3 +1,4 @@
+import UserCard from '../../components/UserCard/UserCard';
 import './HomePage.css';
 
 function Home() {
@@ -10,6 +11,7 @@ function Home() {
           placeholder="Search GitHub users..."
         />
       </div>
+      <UserCard />
     </>
   );
 }
