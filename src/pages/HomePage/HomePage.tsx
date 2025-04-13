@@ -1,16 +1,22 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import './HomePage.css';
 import UserCard from '../../components/UserCard/UserCard';
 import GithubService from '../../services/github.service';
 import { GithubSearchResponse, GithubUser } from '../../types/githubusers.types';
 import { HandledError } from '../../types/errors.types';
 import { handleErrorMessages } from '../../helpers/ErrorHandler';
+import DuplicateIcon from '../../components/icones/DuplicateIcon';
+import TrashIcon from '../../components/icones/TrashIcon';
 
 function HomePage() {
   const [usersInfos, setUsersInfos] = useState<GithubUser[]>([]);
   const [search, setSearch] = useState<string>('')
   const [debouncedSearch, setDebouncedSearch] = useState<string>('');
   const [errorHandled, setErrorHandled] = useState<HandledError | null>(null)
+  const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
+  
+  const selectAllRef = useRef<HTMLInputElement>(null);
+
 
   const handleLaunchSearchUser = useCallback (async () => {
     let isErrorHandled = false;
@@ -33,7 +39,21 @@ function HomePage() {
         setErrorHandled(handleErrorMessages());
       }
     }
-  }, [debouncedSearch])
+  }, [debouncedSearch])                  
+
+  const handleSelectedUsers = (user: GithubUser, checked: boolean) => {
+    console.log('handle chdeck')
+    setSelectedUsers((prev) =>
+      checked ? [...prev, user.id] : prev.filter((id) => id !== user.id)
+    );
+  }
+
+  useEffect(() => {
+    if (!selectAllRef.current) return;
+  
+    selectAllRef.current.indeterminate = selectedUsers.length > 0 && selectedUsers.length < usersInfos.length;
+  }, [selectedUsers, usersInfos]);
+
 
   // This useEffect debounces the search input.
   // It runs every time the `search` state changes,
@@ -67,6 +87,36 @@ function HomePage() {
     handleLaunchSearchUser();
   }, [debouncedSearch, handleLaunchSearchUser]);
 
+  const selectAllCheckbox = usersInfos.length > 0 ? (
+    <div className="select-all">
+      <label>
+        <input
+          ref={selectAllRef}
+          type="checkbox"
+          checked={selectedUsers.length === usersInfos.length}
+          onChange={(event) => {
+            console.log('selectAllRef', selectAllRef)
+            if (event.target.checked) {
+              setSelectedUsers(usersInfos.map((user) => user.id));
+            } else {
+              setSelectedUsers([]);
+            }
+          }}
+        />
+        <span className="text-select-all-checkbox">{selectedUsers.length} elements selected</span>
+      </label>
+      <div className="button-actions">
+        <button>
+          <DuplicateIcon />
+        </button>
+        <button>
+          <TrashIcon />
+        </button>
+        
+      </div>
+    </div>
+  ) : null;
+
   return (
     <main className="main-content">
       <div className="search-container">
@@ -83,14 +133,22 @@ function HomePage() {
       {debouncedSearch && usersInfos.length === 0 ? (
         <div className="no-results">No results found</div>
       ) : (
-        <div className="user-cards-container">
-          {usersInfos.map((user) => (
-            <UserCard userInfo={user} key={user.id} />
-          ))}
+        <div>
+          {selectAllCheckbox}
+          <div className="user-cards-container">
+            {usersInfos.map((user) => (
+              <UserCard
+                key={user.id}
+                userInfo={user}
+                isChecked={selectedUsers.includes(user.id)}
+                onCheckChange={(checked) => {handleSelectedUsers(user, checked)}}
+              />
+            ))}
+          </div>
         </div>
       )}
     </main>
   );
 }
 
-export default HomePage
+export default HomePage;

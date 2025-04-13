@@ -1,5 +1,4 @@
 .main-content {
-  padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -32,6 +31,10 @@
   display: grid;
   row-gap: 16px;
   justify-items: center;
+  border: solid 1px;
+  padding: 20px;
+  height: 60vh;
+  overflow-y: scroll;
 }
 
 .no-results {
@@ -68,4 +71,19 @@
   .user-cards-container {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+.button-actions {
+  display: flex;
+  height: fit-content;
+}
+
+.select-all {
+  justify-content: space-between;
+  display: flex;
+  height: 75px;
+}
+
+.text-select-all-checkbox {
+  margin-left: 10px;
 }
