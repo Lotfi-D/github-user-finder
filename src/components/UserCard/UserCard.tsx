@@ -1,5 +1,5 @@
-import { GithubUser } from '../../types/githubusers.types';
 import './UserCard.css';
+import { GithubUser } from '../../types/githubusers.types';
 
 type UserCardProps = {
   userInfo: GithubUser;

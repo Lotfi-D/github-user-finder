@@ -20,3 +20,10 @@ export type GithubUser = {
   score: number;
   user_view_type: string;
 };
+
+export type GithubSearchResponse = {
+  items: GithubUser[];
+  total_count: number;
+  incomplete_results: boolean;
+  message?: string;
+};
