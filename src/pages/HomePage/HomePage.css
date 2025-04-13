@@ -32,6 +32,15 @@
   justify-items: center;
 }
 
+.no-results {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
 
 /* Handle grid for desktop */
 @media (min-width: 1024px) {

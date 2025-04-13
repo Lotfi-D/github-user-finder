@@ -25,6 +25,7 @@ function HomePage() {
   // and resets the timeout if the user types again before the delay.
   useEffect(() => {
     if (!search.trim()) {
+      setDebouncedSearch('')
       return;
     }
     
@@ -49,11 +50,6 @@ function HomePage() {
     handleLaunchSearchUser();
   }, [debouncedSearch, handleLaunchSearchUser]);
 
-  useEffect(() => {
-    console.log('debouce', debouncedSearch)
-    if (debouncedSearch) console.log('TEST')
-  }, [debouncedSearch]);
-
   return (
     <main className="main-content">
       <div className="search-container">
@@ -64,18 +60,15 @@ function HomePage() {
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
-      
-      {usersInfos.length > 0 ? 
-        (
-          <div className="user-cards-container">
-            {usersInfos.map((user) => (
-              <UserCard userInfo={user} key={user.id} />
-            ))}
-          </div>
-        ) : (
-          <div>No results found</div>
-        )
-      }
+      {debouncedSearch && usersInfos.length === 0 ? (
+        <div className="no-results">No results found</div>
+      ) : (
+        <div className="user-cards-container">
+          {usersInfos.map((user) => (
+            <UserCard userInfo={user} key={user.id} />
+          ))}
+        </div>
+      )}
     </main>
   );
 }
