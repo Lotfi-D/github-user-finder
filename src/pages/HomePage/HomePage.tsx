@@ -1,22 +1,37 @@
-import './HomePage.css';
 import { useCallback, useEffect, useState } from 'react';
+import './HomePage.css';
 import UserCard from '../../components/UserCard/UserCard';
 import GithubService from '../../services/github.service';
-import { GithubUser } from '../../types/githubusers.types';
+import { GithubSearchResponse, GithubUser } from '../../types/githubusers.types';
+import { HandledError } from '../../types/errors.types';
+import { handleErrorMessages } from '../../helpers/ErrorHandler';
 
 function HomePage() {
   const [usersInfos, setUsersInfos] = useState<GithubUser[]>([]);
   const [search, setSearch] = useState<string>('')
   const [debouncedSearch, setDebouncedSearch] = useState<string>('');
+  const [errorHandled, setErrorHandled] = useState<HandledError | null>(null)
 
   const handleLaunchSearchUser = useCallback (async () => {
-    try {    
+    let isErrorHandled = false;
+
+    try {
       const response = await GithubService.searchUsers(debouncedSearch);
-      const json = await response.json();
-  
+      const json = await response.json() as GithubSearchResponse;
+
+      if (!response.ok) {
+        isErrorHandled = true
+        setErrorHandled(handleErrorMessages(response, json));
+
+        throw new Error(json.message);
+      }
+
       setUsersInfos(json.items);
     } catch (error) {
       console.error('Error while searching GitHub users:', error);
+      if (!isErrorHandled) {
+        setErrorHandled(handleErrorMessages());
+      }
     }
   }, [debouncedSearch])
 
@@ -24,17 +39,19 @@ function HomePage() {
   // It runs every time the `search` state changes,
   // and resets the timeout if the user types again before the delay.
   useEffect(() => {
+    setErrorHandled(null);
+
     if (!search.trim()) {
       setDebouncedSearch('')
       return;
     }
-    
-    const testTimeout = setTimeout(() => {
+
+    const debounceTimer = setTimeout(() => {
       setDebouncedSearch(search)
-    }, 600)
+    }, 0)
 
     return () => {
-      clearTimeout(testTimeout)
+      clearTimeout(debounceTimer)
     }
   }, [search])
 
@@ -59,6 +76,9 @@ function HomePage() {
           placeholder="Search GitHub users..."
           onChange={(e) => setSearch(e.target.value)}
         />
+        {errorHandled && (
+          <div className='error-messages'>{errorHandled.message}</div>
+        )}
       </div>
       {debouncedSearch && usersInfos.length === 0 ? (
         <div className="no-results">No results found</div>

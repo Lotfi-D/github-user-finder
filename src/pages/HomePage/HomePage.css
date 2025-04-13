@@ -9,6 +9,8 @@
   display: flex;
   justify-content: center;
   margin: 2rem 0;
+  align-items: center;
+  flex-direction: column;
 }
 
 .search-input {
@@ -40,6 +42,11 @@
   font-size: 1.2rem;
   font-weight: 500;
   color: var(--color-text-secondary);
+}
+
+.error-messages {
+  color: var(--color-text-error);
+  margin-top: 10px;
 }
 
 /* Handle grid for desktop */
