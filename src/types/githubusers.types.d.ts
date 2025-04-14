@@ -19,6 +19,7 @@ export type GithubUser = {
   site_admin: boolean;
   score: number;
   user_view_type: string;
+  id_app: number;
 };
 
 export type GithubSearchResponse = {

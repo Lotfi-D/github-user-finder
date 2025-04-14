@@ -1,4 +1,6 @@
 .duplicate-icon,
 .trash-icon {
   width: 24px;
+  border: none;
+  background-color: transparent;
 }

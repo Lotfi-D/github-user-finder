@@ -1,5 +1,6 @@
 .user-card {
   width: 100px;
+  height: 142px;
   background-color: var(--color-surface); /* ex: #e0e0e0 */
   border-radius: 8px;
   padding: 8px;
@@ -31,11 +32,14 @@
 
 .user-card__info {
   text-align: center;
+  width: 90px;
 }
 
 .user-card__id,
 .user-card__login {
   font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .user-card__button {

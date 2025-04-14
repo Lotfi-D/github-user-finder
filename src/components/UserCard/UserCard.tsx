@@ -23,7 +23,7 @@ function UserCard({ userInfo, isChecked, onCheckChange }: UserCardProps) {
 
       <div className="user-card__info">
         <div className="user-card__id">{userInfo?.id}</div>
-        <div className="user-card__login">{userInfo?.login}</div>
+        <div className="user-card__login" title={userInfo?.login}>{userInfo?.login}</div>
       </div>
 
       <button className="user-card__button">View profile</button>

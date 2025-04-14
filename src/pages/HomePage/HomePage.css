@@ -73,15 +73,24 @@
   }
 }
 
-.button-actions {
+.button-actions-container {
   display: flex;
   height: fit-content;
+  gap: 16px;
+}
+
+.button-actions {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }
 
 .select-all {
   justify-content: space-between;
   display: flex;
   height: 75px;
+  align-items: center;
+  padding: 30px;
 }
 
 .text-select-all-checkbox {
