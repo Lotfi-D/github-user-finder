@@ -1,45 +1,54 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import './HomePage.css';
 import UserCard from '../../components/UserCard/UserCard';
 import GithubService from '../../services/github.service';
-import DuplicateIcon from '../../components/icones/DuplicateIcon';
-import TrashIcon from '../../components/icones/TrashIcon';
-import Loader from '../../components/Loader/Loader';
+// import Loader from '../../components/Loader/Loader';
 import { GithubSearchResponse, GithubUser } from '../../types/githubusers.types';
 import { HandledError } from '../../types/errors.types';
 import { handleErrorMessages } from '../../helpers/ErrorHandler';
+import Searchbar from '../../components/SearchBar/SearchBar';
+import UserSelectionActions from '../../components/UserSelectionActions/UserSelectionActions';
 
 function HomePage() {
   const [usersInfos, setUsersInfos] = useState<GithubUser[]>([]);
-  const [search, setSearch] = useState<string>('')
-  const [debouncedSearch, setDebouncedSearch] = useState<string>('');
-  const [errorHandled, setErrorHandled] = useState<HandledError | null>(null)
+  const [errorHandled, setErrorHandled] = useState<HandledError | null>(null);
   const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isNoResult, setIsNoResult] = useState<boolean>(false);
   
-  const selectAllRef = useRef<HTMLInputElement>(null);
-
-
-  const handleLaunchSearchUser = useCallback (async () => {
+  const handleLaunchSearchUser = useCallback(async (debouncedSearch: string) => {
     let isErrorHandled = false;
+    setErrorHandled(null);
+    setIsNoResult(false);
 
     try {
-      setIsLoading(true)
-      const response = await GithubService.searchUsers(debouncedSearch);
-      const json = await response.json() as GithubSearchResponse;
+      if (!debouncedSearch.trim()) {
+            setUsersInfos([]);
+            return;
+      } else {
+        setIsLoading(true)
+        const response = await GithubService.searchUsers(debouncedSearch);
+        const json = await response.json() as GithubSearchResponse;
 
-      if (!response.ok) {
-        isErrorHandled = true
-        setErrorHandled(handleErrorMessages(response, json));
+        if (!response.ok) {
+          isErrorHandled = true
+          setErrorHandled(handleErrorMessages(response, json));
 
-        throw new Error(json.message);
+          throw new Error(json.message);
+        }
+
+        // we user this key to distinguish between original profiles and the duplicates one
+        // it will also allow to delete the right selected users
+        // because this key is unique for all users
+        json.items.forEach((user) => {
+          user.id_app = user.id;
+        })
+        
+        setIsNoResult(json.items.length === 0);
+
+        setUsersInfos(json.items);
       }
-
-      json.items.forEach((user) => {
-        user.id_app = user.id
-      })
-
-      setUsersInfos(json.items);
+      
     } catch (error) {
       console.error('Error while searching GitHub users:', error);
       if (!isErrorHandled) {
@@ -51,7 +60,7 @@ function HomePage() {
       //   setIsLoading(false)
       // }, 3000)
     }
-  }, [debouncedSearch])                  
+  }, [])                  
 
   const handleSelectedUsers = (user: GithubUser, checked: boolean) => {
     setSelectedUsers((prev) =>
@@ -82,6 +91,7 @@ function HomePage() {
     setSelectedUsers([])
   }
 
+  // it generates id_app for duplicates users
   const generateIdApp= (userId: number) => {
     const randomNumber = Math.floor(Math.random() * 9000) + 1000;
     return Number(`${userId}${randomNumber}`)
@@ -94,83 +104,20 @@ function HomePage() {
     setSelectedUsers([])
   };
 
-  useEffect(() => {
-    if (!selectAllRef.current) return;
-  
-    selectAllRef.current.indeterminate = selectedUsers.length > 0 && selectedUsers.length < usersInfos.length;
-  }, [selectedUsers, usersInfos]);
-
-  // This useEffect debounces the search input.
-  // It runs every time the `search` state changes,
-  // and resets the timeout if the user types again before the delay.
-  useEffect(() => {
-    setErrorHandled(null);
-
-    if (!search.trim()) {
-      setDebouncedSearch('')
-      return;
-    }
-
-    const debounceTimer = setTimeout(() => {
-      setDebouncedSearch(search)
-    }, 600)
-
-    return () => {
-      clearTimeout(debounceTimer)
-    }
-  }, [search])
-
-  // This useEffect is triggered every time `debouncedSearch` changes.
-  // `handleLaunchSearchUser` is added to the dependencies to satisfy ESLint rules.
-  // The function is memoized with `useCallback` to prevent infinite loops (line 13).
-  // As a result, the effect is only re-triggered when `debouncedSearch` actually changes.
-  useEffect(() => {
-    if (!debouncedSearch.trim()) {
-      console.log('ici')
-      setUsersInfos([]);
-      return;
-    }
-
-    handleLaunchSearchUser();
-  }, [debouncedSearch, handleLaunchSearchUser]);
-
   return (
     <main className="main-content">
-      <div className="search-container">
-        <input
-          type="text"
-          className="search-input"
-          placeholder="Search GitHub users..."
-          onChange={(event) => setSearch(event.target.value)}
-        />
-        {errorHandled && (
-          <div className='error-messages'>{errorHandled.message}</div>
-        )}
-      </div>
-
-      <div className="select-all">
-        <label>
-          <input
-            ref={selectAllRef}
-            type="checkbox"
-            checked={(selectedUsers.length === usersInfos.length) && (usersInfos.length > 0) }
-            disabled={usersInfos.length === 0}
-            onChange={(event) => {handleSelectedAllUsers(event)}}
-          />
-          <span className="text-select-all-checkbox">{selectedUsers.length} elements selected</span>
-        </label>
-        <div className="button-actions-container">
-          <button className="button-actions" disabled={selectedUsers.length === 0} onClick={duplicateUsers}>
-            <DuplicateIcon />
-          </button>
-          <button className="button-actions" disabled={selectedUsers.length === 0} onClick={deleteUsers}>
-            <TrashIcon />
-          </button>
-        </div>
-      </div>
-
-      {debouncedSearch && usersInfos.length === 0 ? (
-        <div className="no-results">No results found</div>
+      <Searchbar errorHandled={errorHandled} onDebouncedSearchChange={handleLaunchSearchUser} />
+      
+      <UserSelectionActions 
+        selectedUsersLength={selectedUsers?.length}
+        usersLength={usersInfos.length}
+        onSelectedUsers={handleSelectedAllUsers}
+        onDeleteUsers={deleteUsers}
+        onDuplicateUsers={duplicateUsers}
+      />
+  
+      {isNoResult ? (
+        <div className="no-results">No results found {isNoResult}</div>
       ) : (
         <div>
           <div className="user-cards-container">

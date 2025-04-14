@@ -3,30 +3,6 @@
   margin: 0 auto;
 }
 
-.search-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin: 2rem 0;
-  align-items: center;
-  flex-direction: column;
-}
-
-.search-input {
-  width: 100%;
-  max-width: 400px;
-  padding: 12px 16px;
-  border: none;
-  border-radius: 6px;
-  background-color: var(--color-surface);
-  font-size: 16px;
-  color: var(--color-text-primary);
-  outline: none;
-
-  text-align: center;
-  box-sizing: border-box;
-}
-
 .user-cards-container {
   display: grid;
   row-gap: 16px;
