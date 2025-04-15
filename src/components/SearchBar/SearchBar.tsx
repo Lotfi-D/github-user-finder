@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './SearchBar.css'
 import { HandledError } from '../../types/errors.types';
+import ToggleEditMode from '../ToggleEditMode/ToggleEditMode';
 
 type SearchbarProps = {
   errorHandled: HandledError |null;
@@ -44,6 +45,8 @@ function Searchbar({ errorHandled, onDebouncedSearchChange, }: SearchbarProps) {
       {errorHandled && (
         <div className='error-messages'>{errorHandled.message}</div>
       )}
+      <ToggleEditMode />
+
     </div>)
 }
 

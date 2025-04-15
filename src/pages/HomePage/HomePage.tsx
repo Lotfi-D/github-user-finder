@@ -2,12 +2,13 @@ import { useCallback, useState } from 'react';
 import './HomePage.css';
 import UserCard from '../../components/UserCard/UserCard';
 import GithubService from '../../services/github.service';
-// import Loader from '../../components/Loader/Loader';
+import Loader from '../../components/Loader/Loader';
 import { GithubSearchResponse, GithubUser } from '../../types/githubusers.types';
 import { HandledError } from '../../types/errors.types';
 import { handleErrorMessages } from '../../helpers/ErrorHandler';
 import Searchbar from '../../components/SearchBar/SearchBar';
 import UserSelectionActions from '../../components/UserSelectionActions/UserSelectionActions';
+import useEditMode from '../../providers/editMode/UseEditMode';
 
 function HomePage() {
   const [usersInfos, setUsersInfos] = useState<GithubUser[]>([]);
@@ -16,14 +17,16 @@ function HomePage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isNoResult, setIsNoResult] = useState<boolean>(false);
   
+  const { isEditModeActive } = useEditMode();
+  
   const handleLaunchSearchUser = useCallback(async (debouncedSearch: string) => {
     let isErrorHandled = false;
     setErrorHandled(null);
     setIsNoResult(false);
+    setUsersInfos([]);
 
     try {
       if (!debouncedSearch.trim()) {
-            setUsersInfos([]);
             return;
       } else {
         setIsLoading(true)
@@ -55,10 +58,9 @@ function HomePage() {
         setErrorHandled(handleErrorMessages());
       }
     } finally {
-
-      // setTimeout(() => {
-      //   setIsLoading(false)
-      // }, 3000)
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 300)
     }
   }, [])                  
 
@@ -108,18 +110,21 @@ function HomePage() {
     <main className="main-content">
       <Searchbar errorHandled={errorHandled} onDebouncedSearchChange={handleLaunchSearchUser} />
       
-      <UserSelectionActions 
-        selectedUsersLength={selectedUsers?.length}
-        usersLength={usersInfos.length}
-        onSelectedUsers={handleSelectedAllUsers}
-        onDeleteUsers={deleteUsers}
-        onDuplicateUsers={duplicateUsers}
-      />
-  
+      { isEditModeActive && (
+          <UserSelectionActions 
+            selectedUsersLength={selectedUsers?.length}
+            usersLength={usersInfos.length}
+            onSelectedUsers={handleSelectedAllUsers}
+            onDeleteUsers={deleteUsers}
+            onDuplicateUsers={duplicateUsers}
+          />
+        )
+      }
       {isNoResult ? (
         <div className="no-results">No results found {isNoResult}</div>
       ) : (
-        <div>
+        <div className="user-cards-wrapper">
+          {isLoading && <Loader />}
           <div className="user-cards-container">
             {usersInfos.map((user, id_app) => (
               <div key={id_app}>
