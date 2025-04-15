@@ -23,11 +23,6 @@
   color: var(--color-text-secondary);
 }
 
-.error-messages {
-  color: var(--color-text-error);
-  margin-top: 10px;
-}
-
 /* Handle grid for desktop */
 @media (min-width: 1024px) {
   .user-cards-container {
@@ -47,28 +42,4 @@
   .user-cards-container {
     grid-template-columns: repeat(2, 1fr);
   }
-}
-
-.button-actions-container {
-  display: flex;
-  height: fit-content;
-  gap: 16px;
-}
-
-.button-actions {
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-}
-
-.select-all {
-  justify-content: space-between;
-  display: flex;
-  height: 75px;
-  align-items: center;
-  padding: 30px;
-}
-
-.text-select-all-checkbox {
-  margin-left: 10px;
 }
