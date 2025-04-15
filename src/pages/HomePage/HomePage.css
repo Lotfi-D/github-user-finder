@@ -25,6 +25,8 @@
 
 .user-cards-wrapper {
   position: relative;
+  transition: transform 0.3s ease;
+  transform: translateY(0);
 }
 
 /* Handle grid for desktop */
@@ -52,4 +54,22 @@
   .user-cards-wrapper {
     padding: 20px;
   }
+}
+
+.actions-wrapper {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.actions-wrapper.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.actions-wrapper.hidden + .user-cards-wrapper {
+  transform: translateY(-20px);
+  margin-top: 3rem;
 }

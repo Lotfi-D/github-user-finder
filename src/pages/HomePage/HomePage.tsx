@@ -109,7 +109,7 @@ function HomePage() {
   return (
     <main className="main-content">
       <Searchbar errorHandled={errorHandled} onDebouncedSearchChange={handleLaunchSearchUser} />
-      
+      <div className={`actions-wrapper ${isEditModeActive ? 'active' : 'hidden'}`}>
       { isEditModeActive && (
           <UserSelectionActions 
             selectedUsersLength={selectedUsers?.length}
@@ -120,6 +120,7 @@ function HomePage() {
           />
         )
       }
+      </div>
       {isNoResult ? (
         <div className="no-results">No results found {isNoResult}</div>
       ) : (
