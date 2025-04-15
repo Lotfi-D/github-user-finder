@@ -1,37 +1,16 @@
 .main-content {
-  padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
-}
-
-.search-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin: 2rem 0;
-  align-items: center;
-  flex-direction: column;
-}
-
-.search-input {
-  width: 100%;
-  max-width: 400px;
-  padding: 12px 16px;
-  border: none;
-  border-radius: 6px;
-  background-color: var(--color-surface);
-  font-size: 16px;
-  color: var(--color-text-primary);
-  outline: none;
-
-  text-align: center;
-  box-sizing: border-box;
 }
 
 .user-cards-container {
   display: grid;
   row-gap: 16px;
   justify-items: center;
+  border: solid 1px;
+  padding: 20px;
+  height: 60vh;
+  overflow-y: scroll;
 }
 
 .no-results {
@@ -42,11 +21,6 @@
   font-size: 1.2rem;
   font-weight: 500;
   color: var(--color-text-secondary);
-}
-
-.error-messages {
-  color: var(--color-text-error);
-  margin-top: 10px;
 }
 
 /* Handle grid for desktop */

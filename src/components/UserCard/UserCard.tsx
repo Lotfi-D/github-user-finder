@@ -3,12 +3,19 @@ import { GithubUser } from '../../types/githubusers.types';
 
 type UserCardProps = {
   userInfo: GithubUser;
+  isChecked: boolean;
+  onCheckChange: (checked: boolean) => void;
 };
 
-function UserCard({ userInfo }: UserCardProps) {
+function UserCard({ userInfo, isChecked, onCheckChange }: UserCardProps) {
   return (
     <div className="user-card">
-      <input type="checkbox" className="user-card__checkbox" />
+     <input
+      type="checkbox"
+      className="user-card__checkbox"
+      checked={isChecked}
+      onChange={(event) => onCheckChange(event.target.checked)}
+    />
 
       <div className="user-card__avatar">
         <img src={userInfo?.avatar_url} className="avatar-img" />
@@ -16,7 +23,7 @@ function UserCard({ userInfo }: UserCardProps) {
 
       <div className="user-card__info">
         <div className="user-card__id">{userInfo?.id}</div>
-        <div className="user-card__login">{userInfo?.login}</div>
+        <div className="user-card__login" title={userInfo?.login}>{userInfo?.login}</div>
       </div>
 
       <button className="user-card__button">View profile</button>
@@ -24,4 +31,4 @@ function UserCard({ userInfo }: UserCardProps) {
   );
 }
 
-export default UserCard
+export default UserCard;
