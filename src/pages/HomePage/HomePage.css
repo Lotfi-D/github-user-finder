@@ -23,6 +23,10 @@
   color: var(--color-text-secondary);
 }
 
+.user-cards-wrapper {
+  position: relative;
+}
+
 /* Handle grid for desktop */
 @media (min-width: 1024px) {
   .user-cards-container {
@@ -41,5 +45,11 @@
 @media (max-width: 767px) {
   .user-cards-container {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .user-cards-wrapper {
+    padding: 20px;
   }
 }
