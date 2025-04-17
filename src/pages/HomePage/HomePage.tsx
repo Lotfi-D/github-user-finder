@@ -79,6 +79,8 @@ function HomePage() {
   }
 
   const duplicateUsers = () => {
+    setIsLoading(true);
+
     const usersToDuplicate = selectedUsers
       .map((idSelectedUser) => usersInfos
       .find((user) => user.id === idSelectedUser))
@@ -90,6 +92,10 @@ function HomePage() {
       }
     })
 
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 300)
+
     setSelectedUsers([])
   }
 
@@ -100,10 +106,15 @@ function HomePage() {
   }
 
   const deleteUsers = () => {
+    setIsLoading(true);
     const updatedUsers = usersInfos.filter((user) => !selectedUsers.includes(user.id_app));
   
     setUsersInfos(updatedUsers);
     setSelectedUsers([])
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 300)
   };
 
   return (

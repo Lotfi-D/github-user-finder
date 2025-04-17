@@ -6,9 +6,6 @@ type Props = {
 };
 
 function EditModeProvider ({ children }: Props) {
-  // const editModeSaved = JSON.parse(localStorage.getItem('isEditModeActive') || 'false');
-  // const [isEditModeActive, setIsEditModeActive] = useState(editModeSaved || false);
-
   const [isEditModeActive, setIsEditModeActive] = useState(() => {
     const storedValue = localStorage.getItem("isEditModeActive");
     return storedValue ? JSON.parse(storedValue) : false;
