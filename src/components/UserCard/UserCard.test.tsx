@@ -4,7 +4,7 @@ import UserCard from './UserCard';
 import { vi } from 'vitest';
 import { GithubUser } from '../../types/githubusers.types';
 
-describe('UserCard Component', () => {
+describe('Tests on UserCard Component', () => {
   const mockUser: GithubUser = {
     login: 'john_doe',
     id: 12345,

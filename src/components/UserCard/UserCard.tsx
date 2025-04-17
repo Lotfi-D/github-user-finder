@@ -12,6 +12,7 @@ function UserCard({ userInfo, isChecked, onCheckChange }: UserCardProps) {
     <div className="user-card">
      <input
       type="checkbox"
+      aria-label={`card-checkbox-id-${userInfo.id}`}
       className="user-card__checkbox"
       checked={isChecked}
       onChange={(event) => onCheckChange(event.target.checked)}

@@ -29,12 +29,12 @@ function HomePage() {
       if (!debouncedSearch.trim()) {
             return;
       } else {
-        setIsLoading(true)
+        setIsLoading(true);
         const response = await GithubService.searchUsers(debouncedSearch);
         const json = await response.json() as GithubSearchResponse;
 
         if (!response.ok) {
-          isErrorHandled = true
+          isErrorHandled = true;
           setErrorHandled(handleErrorMessages(response, json));
 
           throw new Error(json.message);
@@ -59,8 +59,8 @@ function HomePage() {
       }
     } finally {
       setTimeout(() => {
-        setIsLoading(false)
-      }, 300)
+        setIsLoading(false);
+      }, 600)
     }
   }, [])                  
 
@@ -94,7 +94,7 @@ function HomePage() {
 
     setTimeout(() => {
       setIsLoading(false)
-    }, 300)
+    }, 600)
 
     setSelectedUsers([])
   }
@@ -114,7 +114,7 @@ function HomePage() {
 
     setTimeout(() => {
       setIsLoading(false);
-    }, 300)
+    }, 600)
   };
 
   return (
