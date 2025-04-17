@@ -27,6 +27,7 @@ function UserSelectionActions({ selectedUsersLength, usersLength, onSelectedUser
         <input
           ref={selectAllRef}
           type="checkbox"
+          aria-label="selected all users"
           checked={(selectedUsersLength === usersLength) && (usersLength > 0) }
           disabled={usersLength === 0}
           onChange={onSelectedUsers}
@@ -34,7 +35,8 @@ function UserSelectionActions({ selectedUsersLength, usersLength, onSelectedUser
         <span className="text-select-all-checkbox">{selectedUsersLength} elements selected</span>
       </label>
       <div className="button-actions-container">
-        <button 
+        <button
+          aria-label="duplicate users"
           className="button-actions"
           disabled={selectedUsersLength === 0}
           onClick={onDuplicateUsers}
@@ -42,6 +44,7 @@ function UserSelectionActions({ selectedUsersLength, usersLength, onSelectedUser
           <DuplicateIcon />
         </button>
         <button 
+          aria-label="Delete selected users"
           className="button-actions"
           disabled={selectedUsersLength === 0}
           onClick={onDeleteUsers}

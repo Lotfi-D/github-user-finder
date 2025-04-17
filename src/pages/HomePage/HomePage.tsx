@@ -29,12 +29,12 @@ function HomePage() {
       if (!debouncedSearch.trim()) {
             return;
       } else {
-        setIsLoading(true)
+        setIsLoading(true);
         const response = await GithubService.searchUsers(debouncedSearch);
         const json = await response.json() as GithubSearchResponse;
 
         if (!response.ok) {
-          isErrorHandled = true
+          isErrorHandled = true;
           setErrorHandled(handleErrorMessages(response, json));
 
           throw new Error(json.message);
@@ -59,8 +59,8 @@ function HomePage() {
       }
     } finally {
       setTimeout(() => {
-        setIsLoading(false)
-      }, 300)
+        setIsLoading(false);
+      }, 600)
     }
   }, [])                  
 
@@ -79,6 +79,8 @@ function HomePage() {
   }
 
   const duplicateUsers = () => {
+    setIsLoading(true);
+
     const usersToDuplicate = selectedUsers
       .map((idSelectedUser) => usersInfos
       .find((user) => user.id === idSelectedUser))
@@ -90,6 +92,10 @@ function HomePage() {
       }
     })
 
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 600)
+
     setSelectedUsers([])
   }
 
@@ -100,10 +106,15 @@ function HomePage() {
   }
 
   const deleteUsers = () => {
+    setIsLoading(true);
     const updatedUsers = usersInfos.filter((user) => !selectedUsers.includes(user.id_app));
   
     setUsersInfos(updatedUsers);
     setSelectedUsers([])
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 600)
   };
 
   return (
