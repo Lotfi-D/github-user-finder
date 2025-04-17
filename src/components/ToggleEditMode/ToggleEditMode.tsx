@@ -12,7 +12,7 @@ function ToggleEditMode() {
       </span>
       </div>
       <label className="switch">
-        <input type="checkbox" checked={isEditModeActive} onClick={toggleEditMode} />
+        <input type="checkbox" checked={isEditModeActive} onClick={toggleEditMode} onChange={() => {}} />
         <span className="slider round"></span>
       </label>
     </div>
