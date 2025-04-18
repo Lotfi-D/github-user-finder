@@ -27,7 +27,7 @@ To run this project locally:
 1. **Clone the repository**:
 
 ```bash
-git clone https://github.com/Lotfi-D/technical_test_fulll.git
+git clone https://github.com/Lotfi-D/github-user-finder.git
 
 
 2. **Install dependencies**
