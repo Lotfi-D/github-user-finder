@@ -1,54 +1,52 @@
-# React + TypeScript + Vite
+# 🔍 GitHub User Search App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + TypeScript application that allows users to search for GitHub profiles in real-time using the GitHub Search API. Built with modern best practices in frontend development.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- 🔎 **Live Search**: Instantly fetch GitHub users as you type — no need to press Enter.
+- 📱 **Responsive Design**: Optimized for desktop and mobile.
+- 🧑‍💻 **User Cards**: Display GitHub avatars and usernames in a grid layout.
+- ✅ **Edit Mode**:
+  - Toggle to show checkboxes and bulk actions.
+  - Select individual or all cards.
+  - Duplicate or delete selected items (frontend-only).
+- 🧠 **Robust Handling**:
+  - Displays a message when no users are found.
+  - Warns if GitHub API rate limits are reached.
+  - Debounced input to avoid excessive requests.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## 🏁 Getting Started
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+To run this project locally:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. **Clone the repository**:
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+```bash
+git clone https://github.com/Lotfi-D/github-user-finder.git
+
+
+2. **Install dependencies**
+
+At the root of the project, run the following command to install all required dependencies:
+
+`npm install`
+
+
+3. **Start the application**
+
+Une fois les dépendances installées, lancez l'application avec :
+
+`npm run dev`
+
+##  Unit Tests
+
+To run the unit tests and verify the functionality of the application, use the following command:
+
+`npm run test`
+
+
